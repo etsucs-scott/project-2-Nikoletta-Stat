@@ -1,3 +1,5 @@
+namespace WarGame.Core;
+{
 public class Hand
 {
     public Queue<Card> hand { get; } = new Queue<Card> ();
@@ -19,4 +21,5 @@ public class Hand
     {
         return hand.Count > 0;
     }
+}
 }

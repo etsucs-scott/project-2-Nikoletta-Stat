@@ -1,3 +1,5 @@
+namespace WarGame.Core;
+{
 public class WarEngine
 {
     private PlayerHands playerHands = new PlayerHands();
@@ -20,11 +22,12 @@ public class WarEngine
         int numPlayers = playerHands.Hands.Count;
         int playerIndex = 0;
         
-        for (int i = 0; i < deck.Count; i++)
+        while (deck.Count > 0)        
         {
             var card = deck.Draw();
-            string currentPlayer = playerHands.Hand[playerIndex % numPlayers];
-            playerHands[currentPlayer].hand.Enqueue[card];
+            List<string> keys = new List<string>(playerHands.Hands.Keys);
+            string currentPlayer = keys[playerIndex % numPlayers];
+            playerHands.Hands[currentPlayer].hand.Enqueue(card);
             playerIndex++;
         }
     }
@@ -44,6 +47,7 @@ public class WarEngine
 
     public void Game()
     {
+        DealHands();
         int round = 0;
 
         while (round < roundLimit)
@@ -56,9 +60,9 @@ public class WarEngine
             round++;
             pot.Clear();
             Console.WriteLine("\nRound " + round);
-            PlayRound(activePlayers);
+            PlayRound(activePlayers, false);
         }
-        DeclareWinner();
+        DeclareFinalWinner();
     }
 
     public void PlayRound(List<string> activePlayers, bool tiebreaker)
@@ -70,11 +74,11 @@ public class WarEngine
 
         foreach (string playerName in activePlayers)
         {
-            Hand hand = activePlayers.Hands[playerName];
+            Hand hand = playerHands.Hands[playerName];
             Card card = hand.PlayCard();
             playedCards.Cards[playerName] = card;
             pot.Add(card);
-            Console.WriteLine($"{playerName}: {card.RankAsString}");
+            Console.WriteLine($"{playerName}: {card.RankAsString()}");
         }
         InterpretRound(activePlayers);
     }
@@ -95,7 +99,7 @@ public class WarEngine
                 tiedPlayers.Add(playerName);
         }
 
-        if (tiedPlayers.Count > 0)
+        if (tiedPlayers.Count > 1)
         {
             Console.WriteLine($"Tie between {string.Join(" and ", tiedPlayers)}!");
             string potString = "";
@@ -105,7 +109,7 @@ public class WarEngine
                 if (i < pot.Count - 1)
                     potString += ", ";
             }
-            Console.WriteLine($"Pot includes: {potString}";
+            Console.WriteLine($"Pot includes: {potString}");
             PlayRound(tiedPlayers, true);
         }
         else
@@ -160,17 +164,20 @@ public class WarEngine
 
     }
 
-    public void DisplayCardCounts()
+    public string DisplayCardCounts()
     {
+        string countsString = "";
         bool firstIndex = true;
         foreach (string name in playerHands.Hands.Keys)
         {
             if (!firstIndex)
-                Console.Write(", ");
-            Console.Write($"{name} = {playerHands.Hands[name].Count}");
+                countsString += ", ";
+            countsString += $"{name} = {playerHands.Hands[name].Count}";
             firstIndex = false;
         }
+        return countsString;
     }
 
 
+}
 }

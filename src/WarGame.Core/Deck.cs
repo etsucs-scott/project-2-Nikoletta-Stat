@@ -1,3 +1,5 @@
+namespace WarGame.Core;
+{
 public class Deck
 {
     private Stack<Card> Cards = new Stack<Card>;
@@ -42,4 +44,5 @@ public class Deck
     {
         return Cards.Pop();
     }
+}
 }

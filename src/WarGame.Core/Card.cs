@@ -1,5 +1,5 @@
 ﻿namespace WarGame.Core;
-
+{
 public enum Suit
 {
     Spades,
@@ -64,4 +64,5 @@ public class Card
         if (Rank == Rank.Ace)
             return "A";
     }
+}
 }
