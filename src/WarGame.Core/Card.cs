@@ -1,5 +1,6 @@
 ﻿namespace WarGame.Core;
-{
+
+// Suit contains every suit of card.
 public enum Suit
 {
     Spades,
@@ -8,9 +9,10 @@ public enum Suit
     Clubs
 }
 
-pulic enum Rank
+// Rank contains every possible rank.
+public enum Rank
 {
-    Two = 2,
+    Two,
     Three,
     Four,
     Five,
@@ -24,6 +26,8 @@ pulic enum Rank
     King,
     Ace
 }
+
+// A card has a suit and a rank.
 public class Card
 {
     public Suit Suit { get; }
@@ -35,6 +39,7 @@ public class Card
         Rank = rank;
     }
 
+    // RankAsString returns the numeric value of each rank as a string.
     public string RankAsString()
     {
         if (Rank == Rank.Two)
@@ -63,6 +68,7 @@ public class Card
             return "K";
         if (Rank == Rank.Ace)
             return "A";
+
+        return string.Empty;
     }
-}
 }
